@@ -8,6 +8,6 @@ namespace ShoppingAPI23.DAL.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo {1} carateres.")]
         public string Name { get; set; }
-
+        
     }
 }

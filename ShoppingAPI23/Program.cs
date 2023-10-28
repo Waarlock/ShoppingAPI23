@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShoppingAPI23.DAL;
+using ShoppingAPI23.Domain.Interfaces;
+using ShoppingAPI23.Domain.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<DataBaseContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString
     ("DefaultConnection")));
+
+builder.Services.AddScoped<ICountryService, CountryService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
