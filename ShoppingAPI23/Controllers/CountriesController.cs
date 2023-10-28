@@ -19,18 +19,44 @@ namespace ShoppingAPI23.Controllers
         //Todo Endpoint returna ActionResult, retorna resultado de una accion
 
         [HttpGet, ActionName("Get")]
-        [Route("Get")] // Concateno la URL inicial : api/countries/get
-        
+        [Route("Get")] // Concateno la URL inicial : api/countries/g
+
         public async Task<ActionResult<IEnumerable<Country>>> GetCountriesAsync()
         {
             var countries = await _countryService.GetCountriesAsync(); // lendo a capa de Domain para traer tabla countries
-        
-            if(countries == null || !countries.Any())
+
+            if (countries == null || !countries.Any())
             {
-                return NotFound();  
+                return NotFound();
             }
 
             return Ok(countries);
+        }
+
+        [HttpPost, ActionName("Create")]
+        [Route("Create")]
+        public async Task<ActionResult> CreateCountryAsync(Country country)
+        {
+            try
+            {
+                var createdCountry = await _countryService.CreateCountryAsync(country);
+
+                if (createdCountry == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(createdCountry);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("duplicate"))
+                {
+                    return Conflict(String.Format("El pais {0} ya existe", country.Name));
+
+                }
+                return Conflict(ex.Message);
+            }
         }
     }
 }
